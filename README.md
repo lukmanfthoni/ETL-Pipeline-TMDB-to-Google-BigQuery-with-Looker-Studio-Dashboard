@@ -1,86 +1,95 @@
-# ETL-Pipeline-TMDB-to-Google-BigQuery-with-Looker-Studio-Dashboard
-ETL Pipeline TMDB to Google BigQuery with Looker Studio Dashboard
-
-Repository ini berisi proses ETL (Extract, Transform, Load) untuk mengambil data film dari TMDB (The Movie Database) API, melakukan transformasi, lalu memuatnya ke Google BigQuery sebagai data lake/data warehouse.
-Hasil akhirnya divisualisasikan dalam bentuk dashboard interaktif Looker Studio.
-ETL Pipeline: TMDB → Google BigQuery → Looker Studio Dashboard
-
-Repository ini berisi proses ETL (Extract, Transform, Load) untuk mengambil data film dari TMDB (The Movie Database) API, melakukan transformasi, lalu memuatnya ke Google BigQuery sebagai data lake/data warehouse.
-
-Hasil akhirnya divisualisasikan dalam bentuk dashboard interaktif Looker Studio.
-| Bagian          | Teknologi                                              |
-| --------------- | ------------------------------------------------------ |
-| Data Source     | TMDB API                                               |
-| ETL Script      | Python (`requests`, `pandas`, `google-cloud-bigquery`) |
-| Data Warehouse  | Google BigQuery                                        |
-| Visualization   | Looker Studio                                          |
-| Version Control | GitHub                                                 |
 
 
-📥 Extract (TMDB API)
+# ETL Pipeline: TMDB → Google BigQuery → Looker Studio Dashboard
 
-Proses mengambil data seperti:
+Repository ini berisi proses **ETL (Extract, Transform, Load)** untuk mengambil data film dari **TMDB (The Movie Database)** menggunakan API, melakukan transformasi data, dan memuatnya ke **Google BigQuery** sebagai data warehouse.  
+Hasil akhirnya divisualisasikan dalam bentuk **dashboard interaktif di Looker Studio**.
 
-Popular Movies
+---
 
-Top Rated Movies
+## 📌 Fitur Utama
 
-Upcoming / Now Playing
+- 🔗 Extract data film dari TMDB API  
+- 🧹 Transformasi data menjadi format tabular  
+- ☁️ Load data ke Google BigQuery  
+- 🗂️ Struktur tabel rapi (movies, genres, dll.)  
+- 📊 Dashboard interaktif di Looker Studio  
+- 🤖 Dapat diperluas menjadi pipeline otomatis (cron/Cloud Scheduler)
 
-Movie Details (genre, rating, popularity, release date)
+---
 
-Data diekstraksi dalam format JSON dan diubah menjadi DataFrame.
+## 🛠️ Teknologi yang Digunakan
 
-🔧 Transform
+| Bagian | Teknologi |
+|--------|-----------|
+| Data Source | TMDB API |
+| Bahasa | Python |
+| Libraries | requests, pandas, google-cloud-bigquery |
+| Data Warehouse | Google BigQuery |
+| Visualisasi | Looker Studio |
+| Version Control | GitHub |
 
-Transformasi yang dilakukan:
+---
 
-Normalisasi JSON → tabel tabular
+## 📥 Extract (TMDB API)
 
-Konversi tipe data (tanggal, angka)
+Data diambil dari TMDB menggunakan REST API dengan jenis data berikut:
 
-Pembersihan kolom kosong
+- Popular Movies  
+- Top Rated Movies  
+- Upcoming / Now Playing  
+- Movie Details (title, genres, popularity, release date, ratings)
 
-Penyesuaian format sebelum load ke BQ
 
-☁️ Load (Google BigQuery)
+
+## 🔧 Transform
+
+Transformasi data meliputi:
+
+- Normalisasi nested JSON → tabel tabular  
+- Konversi tipe data (tanggal, numerik)  
+- Normalisasi genre  
+- Pembersihan kolom kosong  
+- Penyesuaian agar kompatibel dengan BigQuery schema
+
+---
+
+## ☁️ Load (Google BigQuery)
 
 Data dimuat ke BigQuery menggunakan:
 
-Service Account
+- Service Account JSON  
+- BigQuery Python Client  
+- Mode penulisan: WRITE_APPEND atau WRITE_TRUNCATE (sesuai kebutuhan)
 
-BigQuery Python Client
+Contoh tabel yang digunakan:
 
-Mode WRITE_TRUNCATE / WRITE_APPEND (sesuai kebutuhan)
+- `movies_raw`  
+- `movies_clean`  
+- `movie_genres`
 
-Struktur tabel mencakup:
+---
 
-movies_raw
+## 📊 Dashboard Looker Studio
 
-movies_clean
+Dashboard menggunakan data dari BigQuery untuk menampilkan berbagai visualisasi.
 
-movie_genres
-
-📊 Dashboard Looker Studio
-
-Data yang sudah berada di BigQuery divisualisasikan dalam dashboard interaktif:
-
-🔗 Dashboard Link:
+🔗 **Link Dashboard:**  
 https://lookerstudio.google.com/reporting/7bfa357b-baf1-49ca-9867-9f3cf7b70de5
 
-Dashboard menampilkan:
+Insight yang ditampilkan:
 
-Top Rated Movies
+- Top Rated Movies  
+- Popularity Trends  
+- Distribusi Genre  
+- Rating vs Popularity  
+- Jumlah Film per Tahun  
+- Analisis Popularitas per Genre
 
-Popularity Trends
+---
 
-Distribusi Genre
+## 📂 Struktur Repository
 
-Rating vs Popularity
-
-Yearly Release Chart
-
-/
 ├── etl/
 │   ├── extract_tmdb.py
 │   ├── transform.py
